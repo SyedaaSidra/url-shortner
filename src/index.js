@@ -13,6 +13,7 @@ app.use("/api", routes);
 
 // For redirecting short code
 app.use("/", routes); // must come after /api
+app.use("/analytics", routes);
 PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`server running on port: ${PORT}`);

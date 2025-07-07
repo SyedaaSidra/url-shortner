@@ -6,9 +6,6 @@ require("dotenv").config();
 Base_URL = process.env.BASE_URL;
 const shotenURl = async (req, res) => {
   const { originalUrl } = req.body;
-  console.log(originalUrl);
-  console.log("req.body:", req.body);
-
   if (!validUrl.isUri(originalUrl)) {
     return res.status(500).json({ error: "invalid URl send by User.." });
   }
@@ -26,8 +23,8 @@ const shotenURl = async (req, res) => {
 
     const shortCode = shortid.generate();
 
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 1);
+    const expiredAt = new Date();
+    expiredAt.setDate(expiredAt.getDate() + 1);
 
     url = new urls({
       originalUrl,
@@ -55,10 +52,10 @@ const redirecttoOriginal = async (req, res) => {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
-    // if (url.expiredAt < Date.now()) {
-    //   return res.status(410).json({ error: "Link expired" });
-    // }
-    console.log(url.originalUrl);
+    if (url.expiredAt < Date.now()) {
+      return res.status(410).json({ error: "Link expired" });
+    }
+    await urls.updateOne({ shortCode }, { $inc: { Visited: 1 } });
     return res.redirect(url.originalUrl);
   } catch (error) {
     console.error("Redirect Error:", error);
@@ -66,7 +63,28 @@ const redirecttoOriginal = async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+const showAnalytics = async (req, res) => {
+  const shortCode = req.params.shortCode;
+  try {
+    let url = await urls.findOne({ shortCode });
+    if (!url) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    return res.status(200).json({
+      originalUrl: url.originalUrl,
+      shortCode: url.shortCode,
+      Visited: url.Visited,
+      createdAt: url.createdAt,
+      expiredAt: url.expiredAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
+  }
+};
 module.exports = {
   shotenURl,
   redirecttoOriginal,
+  showAnalytics,
 };
