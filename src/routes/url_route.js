@@ -8,5 +8,5 @@ const {
 
 router.post("/shorten", shotenURl);
 router.get("/:shortCode", redirecttoOriginal);
-router.get("/:shortCode", showAnalytics);
+router.get("/analytics/:shortCode", showAnalytics);
 module.exports = router;
