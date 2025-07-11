@@ -16,10 +16,8 @@ const routes = require("./routes/url_route");
 
 // For creating short URL
 app.use("/api", routes);
+app.use("/api/user", routes);
 
-// For redirecting short code
-app.use("/", routes); // must come after /api
-app.use("/api", routes);
 PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`server running on port: ${PORT}`);
