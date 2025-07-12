@@ -19,14 +19,14 @@ const userSignIn = async (req, res) => {
     }
 
     const payload = {
-      id: user._id,
-      email: user.email,
-      username: user.username,
+      id: existingUser._id,
+      email: existingUser.email,
+      username: existingUser.username,
     };
 
     const token = jwt.sign(payload, "yourSecretKey", { expiresIn: "1h" });
 
-    res.json({ token });
+    return res.json({ token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server error" });
