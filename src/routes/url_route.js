@@ -7,10 +7,9 @@ const {
   showAnalytics,
 } = require("../controller/controller_shorten");
 const { userSignIn, userSignUp } = require("../controller/controller_user");
-router.post("/shorten", shotenURl);
+router.post("/shorten", authorization, shotenURl);
 router.post("/login", userSignIn);
 router.post("/register", userSignUp);
-router.get("/:shortCode", authorization, redirecttoOriginal);
 router.get("/analytics/:shortCode", authorization, showAnalytics);
-
+router.get("/:shortCode", authorization, redirecttoOriginal);
 module.exports = router;

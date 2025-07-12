@@ -6,6 +6,8 @@ require("dotenv").config();
 Base_URL = process.env.BASE_URL;
 const shotenURl = async (req, res) => {
   const { originalUrl } = req.body;
+  console.log("Received URL:", originalUrl);
+  console.log(originalUrl);
   if (!validUrl.isUri(originalUrl)) {
     return res.status(500).json({ error: "invalid URl send by User.." });
   }
@@ -45,6 +47,7 @@ const shotenURl = async (req, res) => {
 const redirecttoOriginal = async (req, res) => {
   const shortCode = req.params.shortCode;
   console.log(shortCode);
+  console.log("#####");
   try {
     let url = await urls.findOne({ shortCode });
     console.log(url);
