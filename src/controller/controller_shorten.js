@@ -19,7 +19,7 @@ const shotenURl = async (req, res) => {
   try {
     let url = await urls.findOne({ originalUrl });
 
-    if (url) {
+    if (url && url.expiredAt > Date.now()) {
       return res.status(200).json({ shortUrl: `${Base_URL}/${url.shortCode}` });
     }
 
