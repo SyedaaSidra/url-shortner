@@ -11,5 +11,5 @@ router.post("/shorten", authorization, shotenURl);
 router.post("/login", userSignIn);
 router.post("/register", userSignUp);
 router.get("/analytics/:shortCode", authorization, showAnalytics);
-router.get("/:shortCode", authorization, redirecttoOriginal);
+router.get("/:shortCode", redirecttoOriginal);
 module.exports = router;
